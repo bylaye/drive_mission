@@ -5,6 +5,7 @@ from typing import List
 import models 
 from schemas.Engin import EnginCreate, Engin, EnginChauffeur, EnginChauffeurUpdate
 from schemas.Chauffeur import Chauffeur, ChauffeurCreate
+from schemas.Mission import Mission, MissionCreate
 import create
 import reads
 import updates
@@ -129,7 +130,13 @@ def get_chauffeur_by_code_permanent(codePermanent:str,  db: Session = Depends(ge
         raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Code Permanent not found")
    
 
+mission_router = APIRouter(prefix="/missions", tags=["Missions"])
+
+@mission_router.post("/add/", response_model=Mission)
+def create_mission(mission:MissionCreate, db: Session = Depends(get_db)):
+    return create.add_mission(db=db, mission=mission)
 
 app = FastAPI(debug=True, title="OptiDrive")
 app.include_router(engin_router)
 app.include_router(chauffeur_router)
+app.include_router(mission_router)
