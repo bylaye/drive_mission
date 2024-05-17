@@ -46,11 +46,8 @@ def create_engin(engin: EnginCreate, db: Session = Depends(get_db)):
 @engin_router.get("/get/all/", response_model=List[Engin])
 def get_engin_all(db:Session = Depends(get_db)):
     engins = reads.get_engin_all(db=db)
-    if engins:
-        return engins
-    else:
-        raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Engin is empty")
-
+    return engins
+    
 
 @engin_router.get("/get/immatricule/{immatricule}", response_model=Engin)
 def get_engin_by_immatricule( immatricule:str, db:Session = Depends(get_db)):
@@ -107,13 +104,10 @@ def create_chauffeur(chauffeur:ChauffeurCreate, db: Session = Depends(get_db)):
     return create.add_chauffeur(db=db, chauffeur=chauffeur)
 
 
-@chauffeur_router.get("/get/all/", response_model=List[Chauffeur])
+@chauffeur_router.get("/get/all/", response_model=List[Engin])
 def get_engin_all(db:Session = Depends(get_db)):
-    chauffeurs = reads.get_chauffeur_all(db=db)
-    if chauffeurs:
-        return chauffeurs
-    else:
-        raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Chauffeur is empty")
+    chauffeurs = reads.get_engin_all(db=db)
+    return chauffeurs
 
 
 @chauffeur_router.get("/get/chauffeurs/{idChauffeur}", response_model=Chauffeur)
@@ -142,9 +136,18 @@ def create_mission(mission:MissionCreate, db: Session = Depends(get_db)):
     return create.add_mission(db=db, mission=mission)
 
 
-@mission_router.get("/all", response_model=List[Mission])
+@mission_router.get("/get/all", response_model=List[Mission])
 def get_all_mission(db:Session = Depends(get_db)):
     return reads.get_mission_all(db=db)
+
+
+@mission_router.get("/get/{idMission}", response_model=Mission)
+def get_mission_by_id(idMission:int, db: Session = Depends(get_db)):
+    db_mission = reads.get_mission_by_id(idMission=idMission, db=db)
+    if db_mission:
+        return db_mission
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Mission not found") 
+
 
 # Partenaire
 partenaire_router = APIRouter(prefix="/partenaires", tags=["Partenaires"])
@@ -152,6 +155,20 @@ partenaire_router = APIRouter(prefix="/partenaires", tags=["Partenaires"])
 @partenaire_router.post("/add", response_model=Partenaire)
 def create_partenaire(partenaire: PartenaireCreate, db: Session = Depends(get_db)):
     return create.add_partenaire(db=db, partenaire=partenaire)
+
+
+@partenaire_router.get("/get/all", response_model=List[Partenaire])
+def get_all_partenaire(db:Session = Depends(get_db)):
+    return reads.get_partenaire_all(db=db)
+
+
+@partenaire_router.get("/get/partenaires/{idPartenaire}", response_model=Partenaire)
+def get_partenaire_by_id(idPartenaire:int, db: Session = Depends(get_db)):
+    db_partenaire = reads.get_partenaire_by_id(idPartenaire=idPartenaire, db=db)
+    if db_partenaire:
+        return db_partenaire
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Partenaire not found") 
+
 
 app = FastAPI(debug=True, title="OptiDrive")
 app.include_router(engin_router)

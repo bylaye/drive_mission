@@ -59,3 +59,19 @@ def get_chauffeur_by_id(db:Session, idChauffeur: int):
 def get_chauffeur_by_code_permanent(db:Session, codePermanent: str):
     db_code_permanent = db.query(models.ChauffeurModel).filter(models.ChauffeurModel.codePermanent == codePermanent).first()
     return db_code_permanent
+
+
+def get_mission_all(db:Session):
+    return db.query(models.MissionModel).all()
+
+
+def get_mission_by_id(db:Session, idMission:int):
+    return db.query(models.MissionModel).filter(models.MissionModel.idMission==idMission).first()
+
+
+def get_partenaire_all(db:Session):
+    return db.query(models.PartenaireModel).all()
+
+
+def get_partenaire_by_id(db:Session, idPartenaire:int):
+    return db.query(models.PartenaireModel).filter(models.PartenaireModel.idPartenaire==idPartenaire).first()
