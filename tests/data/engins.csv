@@ -1,0 +1,10 @@
+"immatricule","marque","typeEngin","typeFuel","capacite","is_remorque","annee","idChauffeur"
+"DK 123 AA","Renault","Camion","ESSENCE",40000,False,2020,4
+"DK 980 AB","FIAT","Camion","GASOIL",50000,False,2017,2
+"TB 768 BA","VOLVO","Camion","ESSENCE",60000,True,2019,3
+"DL 991 CA","Renault","Camion","ESSENCE",40000,False,2020,
+"FK 100 DA","Renault","Camion","ESSENCE",40000,False,2020,2
+"DK 222 KA","Renault","Camion","ESSENCE",40000,False,2015,1
+"DK 144 DA","Renault","Camion","ESSENCE",40000,False,2021,5
+"DK 126 LA","NISSAN","Camion","GASOIL",40000,False,2021,
+"DK 999 PA","FIAT","Camion","ESSENCE",3500,False,2019,
