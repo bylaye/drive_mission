@@ -29,15 +29,18 @@ engin_router = APIRouter(prefix="/engins", tags=["Engins"])
 
 @engin_router.post("/add", response_model=Engin)
 def create_engin(engin: EnginCreate, db: Session = Depends(get_db)):
-    chauffeur = reads.get_engin_chauffeur(db=db, idChauffeur=engin.idChauffeur)
+    chauffeur = reads.get_chauffeur_by_id(db=db, idChauffeur=engin.idChauffeur)
+    chauffeur_engin = reads.get_engin_chauffeur(db=db, idChauffeur=engin.idChauffeur)
     immatricule = reads.get_engin_immatricule(db=db, immatricule=engin.immatricule)
     if immatricule:
-        raise HTTPException(status_code=400, detail=f"Immatricule {engin.immatricule} existe deja")
-    else:
-        if chauffeur:
+        raise HTTPException(status_code=404, detail=f"Immatricule {engin.immatricule} existe deja")
+    
+    if chauffeur or engin.idChauffeur == None:
+        if chauffeur_engin:
             raise HTTPException(status_code=ERROR_NOT_FOUND, 
-                                detail=f"Le chauffeur est deja au camion {chauffeur.immatricule}")        
+                            detail=f"Le chauffeur est deja au camion {chauffeur_engin.immatricule}")
         return create.add_engin(db=db, engin=engin)
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"chauffeur not found")            
 
 
 @engin_router.get("/get/all/", response_model=List[Engin])
@@ -100,7 +103,7 @@ def create_chauffeur(chauffeur:ChauffeurCreate, db: Session = Depends(get_db)):
     codePermanent = chauffeur.model_dump()['codePermanent']
     db_code_permanent = reads.get_chauffeur_by_code_permanent(db=db, codePermanent=codePermanent)
     if db_code_permanent:
-        raise HTTPException(status_code=400, detail="Code Permanent deja enregistre")
+        raise HTTPException(status_code=404, detail="Code Permanent deja enregistre")
     return create.add_chauffeur(db=db, chauffeur=chauffeur)
 
 
@@ -138,6 +141,10 @@ mission_router = APIRouter(prefix="/missions", tags=["Missions"])
 def create_mission(mission:MissionCreate, db: Session = Depends(get_db)):
     return create.add_mission(db=db, mission=mission)
 
+
+@mission_router.get("/all", response_model=List[Mission])
+def get_all_mission(db:Session = Depends(get_db)):
+    return reads.get_mission_all(db=db)
 
 # Partenaire
 partenaire_router = APIRouter(prefix="/partenaires", tags=["Partenaires"])
