@@ -56,15 +56,26 @@ class ChauffeurModel(Base):
 class MissionModel(Base):
     __tablename__ = 'Mission'
     idMission = Column(Integer, primary_key=True)
-    entite = Column(String(30), index=True)
     typeMission = Column(String(30), index=True)
     description = Column(String(255))
     debutMission = Column(DateTime)
     finMission = Column(DateTime)
     quantite = Column(Float)
     statusMission = Column(String(20))
+    idPartenaire = Column(Integer, ForeignKey('Partenaire.idPartenaire'))
     deplacement = relationship("DeplacementModel", back_populates="mission")
     affecterMission = relationship("AffecterModel", back_populates="mission")
+    partenaire = relationship("PartenaireModel", back_populates="mission")
+
+
+class PartenaireModel(Base):
+    __tablename__ = 'Partenaire'
+    idPartenaire = Column(Integer, primary_key=True)
+    nomPartenaire = Column(Integer, unique=True, index=True, nullable=False)
+    adressePartenaire = Column(String(100))
+    emailPartenaire = Column(String(50))
+    telephonePartenaire = Column(String(20))
+    mission = relationship("MissionModel", back_populates="partenaire")
 
 
 class DeplacementModel(Base):
