@@ -15,6 +15,10 @@ def get_engin_all(db:Session):
     return db.query(models.EnginModel).all()
 
 
+def get_engin_by_id(db:Session, idEngin:int):
+    return db.query(models.EnginModel).filter(models.EnginModel.idEngin==idEngin).first()
+
+
 def get_engin_immatricule(db:Session, immatricule:int):
     db_immatricule = db.query(models.EnginModel).filter(models.EnginModel.immatricule==immatricule).first()
     return db_immatricule
@@ -110,4 +114,39 @@ def get_partenaire_mission_by_name(db:Session, nomPartenaire:int):
         for row in rows:
             data.append(dict(zip(cols, row)))
         return data
+    return None
+
+
+def get_last_recharge_engin_immatricule(db:Session, immatricule:int):
+    db_engin = get_engin_immatricule(db=db, immatricule=immatricule)
+    if db_engin:
+        req = text("""SELECT immatricule, dateRecharge, totalLitre, r.idEngin
+                   FROM (SELECT * FROM RechargeFuel WHERE idEngin=:idEngin 
+                            ORDER BY dateRecharge DESC LIMIT 1
+                        ) as r
+                   INNER JOIN Engin as e ON e.idEngin = r.idEngin""")
+        result = db.execute(req, {"idEngin": db_engin.idEngin})
+        rows = result.fetchall()
+        if rows:
+            cols = result.keys()
+            return dict(zip(cols, rows[0]))
+    return None
+
+
+def get_all_recharge_engin_immatricule(db:Session, immatricule:int):
+    db_engin = get_engin_immatricule(db=db, immatricule=immatricule)
+    if db_engin:
+        req = text("""SELECT immatricule, dateRecharge, totalLitre, r.idEngin
+                   FROM (SELECT * FROM RechargeFuel WHERE idEngin=:idEngin 
+                            ORDER BY dateRecharge DESC
+                        ) as r
+                   INNER JOIN Engin as e ON e.idEngin = r.idEngin""")
+        result = db.execute(req, {"idEngin": db_engin.idEngin})
+        rows = result.fetchall()
+        data = []
+        cols = result.keys()
+        if rows:
+            for row in rows:
+                data.append(dict(zip(cols, row)))
+            return data
     return None

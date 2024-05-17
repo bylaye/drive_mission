@@ -7,6 +7,7 @@ from schemas.Engin import EnginCreate, Engin, EnginChauffeur, EnginChauffeurUpda
 from schemas.Chauffeur import Chauffeur, ChauffeurCreate
 from schemas.Mission import Mission, MissionCreate, MissionUpdateFin, MissionResponseUpdate
 from schemas.Partenaire import Partenaire, PartenaireCreate
+from schemas.RechargeFuel import RechargeFuel, RechargeFuelCreate, RechargeFuelEnginResponse
 import create
 import reads
 import updates
@@ -182,8 +183,37 @@ def get_partenaire_by_id(idPartenaire:int, db: Session = Depends(get_db)):
 def get_partenaire_missions_by_name_partner(nomPartenaire:str, db:Session = Depends(get_db)):
     return reads.get_partenaire_mission_by_name(db=db, nomPartenaire=nomPartenaire)
 
+
+recharge_fuel = APIRouter(prefix="/rechargefuel", tags=["Recharge Fuel Carburant"])
+
+
+@recharge_fuel.post("/add", response_model=RechargeFuel)
+def create_recharge_fuel_engin(recharge:RechargeFuelCreate, db:Session = Depends(get_db)):
+    db_engin = reads.get_engin_by_id(db=db, idEngin=recharge.idEngin)
+    if db_engin:
+        return create.add_recharge_fuel(db=db, recharge=recharge)
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Engin not found") 
+
+
+@recharge_fuel.get("/get/lastrecharge", response_model=RechargeFuelEnginResponse)
+def get_last_recharge_fuel_engin_by_immatricule(immatricule:str, db:Session = Depends(get_db)):
+    db_recharge = reads.get_last_recharge_engin_immatricule(db=db, immatricule=immatricule)
+    if db_recharge:
+        return db_recharge
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Engin {immatricule} not found") 
+
+
+@recharge_fuel.get("/get/allrecharge", response_model=List[RechargeFuelEnginResponse])
+def get_last_recharge_fuel_engin_by_immatricule(immatricule:str, db:Session = Depends(get_db)):
+    db_recharge = reads.get_all_recharge_engin_immatricule(db=db, immatricule=immatricule)
+    if db_recharge:
+        return db_recharge
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Engin {immatricule} not found") 
+
+
 app = FastAPI(debug=True, title="OptiDrive")
 app.include_router(engin_router)
+app.include_router(recharge_fuel)
 app.include_router(chauffeur_router)
 app.include_router(partenaire_router)
 app.include_router(mission_router)

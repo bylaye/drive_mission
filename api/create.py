@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Session
-from schemas.Engin import Engin, EnginCreate
-from schemas.Chauffeur import Chauffeur, ChauffeurCreate
-from schemas.Mission import Mission, MissionCreate
-from schemas.Partenaire import Partenaire, PartenaireCreate
+from schemas.Engin import EnginCreate
+from schemas.Chauffeur import  ChauffeurCreate
+from schemas.Mission import  MissionCreate
+from schemas.Partenaire import  PartenaireCreate
+from schemas.RechargeFuel import RechargeFuelCreate
 from typing import List
 import models
 
@@ -34,3 +35,11 @@ def add_partenaire(db:Session, partenaire=PartenaireCreate):
     db.add(db_partenaire)
     db.commit()
     return db_partenaire
+
+
+def add_recharge_fuel(db:Session, recharge:RechargeFuelCreate):
+    db_recharge = models.RechargeFuelModel(**recharge.model_dump())
+    db.add(db_recharge)
+    db.commit()
+    db.refresh(db_recharge)
+    return db_recharge
