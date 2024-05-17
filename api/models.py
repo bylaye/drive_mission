@@ -46,7 +46,7 @@ class ChauffeurModel(Base):
     prenom = Column(String(40), nullable=False)
     nom = Column(String(40), nullable=False)
     adresse = Column(String(40), nullable=False)
-    telephone = Column(String(20), nullable=False)
+    telephone = Column(String(20), nullable=True, unique=True)
     dateNaissance = Column(Date, nullable=False)
     is_active =  Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime)
@@ -62,7 +62,7 @@ class MissionModel(Base):
     finMission = Column(DateTime)
     quantite = Column(Float)
     statusMission = Column(String(20))
-    idPartenaire = Column(Integer, ForeignKey('Partenaire.idPartenaire'))
+    idPartenaire = Column(Integer, ForeignKey('Partenaire.idPartenaire'), nullable=True)
     deplacement = relationship("DeplacementModel", back_populates="mission")
     affecterMission = relationship("AffecterModel", back_populates="mission")
     partenaire = relationship("PartenaireModel", back_populates="mission")
@@ -71,10 +71,10 @@ class MissionModel(Base):
 class PartenaireModel(Base):
     __tablename__ = 'Partenaire'
     idPartenaire = Column(Integer, primary_key=True)
-    nomPartenaire = Column(Integer, unique=True, index=True, nullable=False)
+    nomPartenaire = Column(String(50), unique=True, index=True, nullable=False)
     adressePartenaire = Column(String(100))
-    emailPartenaire = Column(String(50))
-    telephonePartenaire = Column(String(20))
+    emailPartenaire = Column(String(50),  unique=True, nullable=True)
+    telephonePartenaire = Column(String(20), unique=True)
     mission = relationship("MissionModel", back_populates="partenaire")
 
 

@@ -6,6 +6,7 @@ import models
 from schemas.Engin import EnginCreate, Engin, EnginChauffeur, EnginChauffeurUpdate
 from schemas.Chauffeur import Chauffeur, ChauffeurCreate
 from schemas.Mission import Mission, MissionCreate
+from schemas.Partenaire import Partenaire, PartenaireCreate
 import create
 import reads
 import updates
@@ -128,15 +129,25 @@ def get_chauffeur_by_code_permanent(codePermanent:str,  db: Session = Depends(ge
          return chauffeur
     else:
         raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Code Permanent not found")
-   
 
+
+# Mission
 mission_router = APIRouter(prefix="/missions", tags=["Missions"])
 
 @mission_router.post("/add/", response_model=Mission)
 def create_mission(mission:MissionCreate, db: Session = Depends(get_db)):
     return create.add_mission(db=db, mission=mission)
 
+
+# Partenaire
+partenaire_router = APIRouter(prefix="/partenaires", tags=["Partenaires"])
+
+@partenaire_router.post("/add", response_model=Partenaire)
+def create_partenaire(partenaire: PartenaireCreate, db: Session = Depends(get_db)):
+    return create.add_partenaire(db=db, partenaire=partenaire)
+
 app = FastAPI(debug=True, title="OptiDrive")
 app.include_router(engin_router)
 app.include_router(chauffeur_router)
+app.include_router(partenaire_router)
 app.include_router(mission_router)

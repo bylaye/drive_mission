@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 from pydantic import Field
-from typing import Union
 from typing import Optional
-from typing import Literal
 from datetime import datetime, date
 
 
@@ -11,11 +9,11 @@ class ChauffeurStatus(BaseModel):
 
 
 class ChauffeurTelephone(BaseModel):
-    telephone: str
+    telephone: Optional[str] = None
 
 
 class ChauffeurAdresse(BaseModel):
-    adresse: str
+    adresse: Optional[str] = None
 
 
 class ChauffeurBase(ChauffeurStatus, ChauffeurAdresse, ChauffeurTelephone):

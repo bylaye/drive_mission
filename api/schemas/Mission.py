@@ -14,10 +14,10 @@ class MissionFin(BaseModel):
     finMission: Optional[datetime] = None
 
 
-class MissionBase(BaseModel):
-    entite: str = Field(..., description="Entite / Entreprise qui porte la mission")
+class MissionBase(MissionStatus):
+    idPartenaire: Optional[int] = None
     typeMission: str
-    description: str
+    description: Optional[str] = None
     quantite: Optional[float] = 0
 
 
@@ -29,3 +29,11 @@ class Mission(MissionBase, MissionFin, MissionStatus):
     idMission: int
     class Config:
         from_attributes = True
+
+
+class MissionUpdateFin(MissionFin):
+    pass 
+
+
+class MissionUpdateStatus(MissionStatus):
+    pass
