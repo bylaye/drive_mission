@@ -37,3 +37,7 @@ class MissionUpdateFin(MissionFin):
 
 class MissionUpdateStatus(MissionStatus):
     pass
+
+
+class MissionResponseUpdate(Mission, MissionCreate):
+    nomPartenaire: str 

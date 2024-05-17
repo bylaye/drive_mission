@@ -5,7 +5,7 @@ from typing import List
 import models 
 from schemas.Engin import EnginCreate, Engin, EnginChauffeur, EnginChauffeurUpdate
 from schemas.Chauffeur import Chauffeur, ChauffeurCreate
-from schemas.Mission import Mission, MissionCreate
+from schemas.Mission import Mission, MissionCreate, MissionUpdateFin, MissionResponseUpdate
 from schemas.Partenaire import Partenaire, PartenaireCreate
 import create
 import reads
@@ -149,6 +149,14 @@ def get_mission_by_id(idMission:int, db: Session = Depends(get_db)):
     raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Mission not found") 
 
 
+@mission_router.put("/update/mission/{idMission}", response_model=MissionResponseUpdate)
+def update_mission_end_date(idMission:int, mission_update:MissionUpdateFin, db:Session = Depends(get_db)):
+    updated = updates.update_fin_mission(db=db, idMission=idMission, mission_update=mission_update)
+    if updated:
+        return updated
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Not updated mission not found") 
+
+
 # Partenaire
 partenaire_router = APIRouter(prefix="/partenaires", tags=["Partenaires"])
 
@@ -169,6 +177,10 @@ def get_partenaire_by_id(idPartenaire:int, db: Session = Depends(get_db)):
         return db_partenaire
     raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Partenaire not found") 
 
+
+@partenaire_router.get("/get/partenaires/missions/{nomPartenaire}", response_model=List[MissionResponseUpdate])
+def get_partenaire_missions_by_name_partner(nomPartenaire:str, db:Session = Depends(get_db)):
+    return reads.get_partenaire_mission_by_name(db=db, nomPartenaire=nomPartenaire)
 
 app = FastAPI(debug=True, title="OptiDrive")
 app.include_router(engin_router)

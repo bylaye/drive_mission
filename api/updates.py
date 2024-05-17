@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 from schemas.Engin import EnginChauffeurUpdate
 from schemas.Mission import MissionUpdateFin, MissionUpdateStatus
 import reads
@@ -27,6 +28,7 @@ def update_fin_mission(db:Session, idMission:int, mission_update:MissionUpdateFi
         mission_data.finMission = mission_update.model_dump()["finMission"]
         db.commit()
         db.refresh(mission_data)
-        return mission_data
+
+        return reads.get_mission_with_partenaire(db=db, idMission=idMission)
     else:
         return None
