@@ -4,6 +4,7 @@ from schemas.Chauffeur import  ChauffeurCreate
 from schemas.Mission import  MissionCreate
 from schemas.Partenaire import  PartenaireCreate
 from schemas.RechargeFuel import RechargeFuelCreate
+from schemas.Affecter import Affecter, AffecterCreate
 from typing import List
 import models
 
@@ -43,3 +44,10 @@ def add_recharge_fuel(db:Session, recharge:RechargeFuelCreate):
     db.commit()
     db.refresh(db_recharge)
     return db_recharge
+
+
+def add_affecter(db:Session, affecter:AffecterCreate):
+    db_affecter = models.AffecterModel(**affecter.model_dump())
+    db.add(db_affecter)
+    db.commit()
+    return db_affecter
