@@ -9,6 +9,7 @@ from schemas.Mission import Mission, MissionCreate, MissionUpdateFin, MissionRes
 from schemas.Partenaire import Partenaire, PartenaireCreate
 from schemas.RechargeFuel import RechargeFuel, RechargeFuelCreate, RechargeFuelEnginResponse
 from schemas.Affecter import Affecter, AffecterCreate
+from schemas.Deplacement import Deplacement, DeplacementCreate
 import create
 import reads
 import updates
@@ -226,6 +227,20 @@ def create_affectation_engin_mission(affecter:AffecterCreate, db:Session = Depen
     raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Mission not found") 
 
 
+deplacement_router = APIRouter(prefix="/deplacements", tags=["Deplacement"])
+
+
+@deplacement_router.post("/add", response_model=Deplacement)
+def create_deplacement_engin_mission(deplacement:DeplacementCreate, db:Session=Depends(get_db)):
+    engin = reads.get_engin_by_id(db=db, idEngin=deplacement.idEngin)
+    mission = reads.get_mission_by_id(db=db, idMission=deplacement.idMission)
+    if mission:
+        if engin:
+            return create.add_deplacement(deplacement=deplacement, db=db)
+        raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Engin not found") 
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Mission not found") 
+
+
 app = FastAPI(debug=True, title="OptiDrive")
 app.include_router(engin_router)
 app.include_router(recharge_fuel)
@@ -233,3 +248,4 @@ app.include_router(chauffeur_router)
 app.include_router(partenaire_router)
 app.include_router(mission_router)
 app.include_router(affecter_router)
+app.include_router(deplacement_router)

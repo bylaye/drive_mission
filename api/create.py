@@ -5,6 +5,7 @@ from schemas.Mission import  MissionCreate
 from schemas.Partenaire import  PartenaireCreate
 from schemas.RechargeFuel import RechargeFuelCreate
 from schemas.Affecter import Affecter, AffecterCreate
+from schemas.Deplacement import Deplacement, DeplacementCreate
 from typing import List
 import models
 
@@ -51,3 +52,10 @@ def add_affecter(db:Session, affecter:AffecterCreate):
     db.add(db_affecter)
     db.commit()
     return db_affecter
+
+
+def add_deplacement(db:Session, deplacement:DeplacementCreate):
+    db_deplacement = models.DeplacementModel(**deplacement.model_dump())
+    db.add(db_deplacement)
+    db.commit()
+    return db_deplacement
