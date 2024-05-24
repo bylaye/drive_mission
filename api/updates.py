@@ -22,6 +22,16 @@ def update_engin_chauffeur(db:Session, idEngin:int, chauffeur_update:EnginChauff
         return None
 
 
+def update_engin_unassign_with_immatricule(db:Session, immatricule:str):
+    db_engin = reads.get_engin_immatricule(db=db, immatricule=immatricule)
+    if db_engin:
+        db_engin.idChauffeur = None
+        db.commit()
+        db.refresh(db_engin)
+        return db_engin
+    return None
+
+
 def update_fin_mission(db:Session, idMission:int, mission_update:MissionUpdateFin):
     mission_data = db.query(models.MissionModel).filter(models.MissionModel.idMission==idMission).first()
     if mission_data:

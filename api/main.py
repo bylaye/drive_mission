@@ -1,5 +1,6 @@
 from mydb import SessionLocal, engine
 from fastapi import Depends, FastAPI, HTTPException, APIRouter
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
 import models 
@@ -93,6 +94,14 @@ def update_chauffeur_engin(idEngin:int, chauffeur_update:EnginChauffeurUpdate, d
             return db_update
         else:
             raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Engin not found")
+
+
+@engin_router.put("/update/engin/unassign/{immatricule}", response_model=Engin)
+def update_engin_unassign(immatricule:str, db: Session = Depends(get_db)):
+    updated = updates.update_engin_unassign_with_immatricule(immatricule=immatricule, db=db)
+    if updated:
+        return updated
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Engin {immatricule} not found") 
 
 
 # Chauffeur
@@ -249,3 +258,17 @@ app.include_router(partenaire_router)
 app.include_router(mission_router)
 app.include_router(affecter_router)
 app.include_router(deplacement_router)
+
+origins = ["http://localhost:3000"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
