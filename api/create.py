@@ -7,10 +7,12 @@ from schemas.RechargeFuel import RechargeFuelCreate
 from schemas.Affecter import Affecter, AffecterCreate
 from schemas.Deplacement import Deplacement, DeplacementCreate
 from typing import List
+from datetime import datetime
 import models
 
 
 def add_engin(db: Session, engin=EnginCreate):
+    engin.created_at = datetime.now()
     db_engin = models.EnginModel(**engin.model_dump())
     db.add(db_engin)
     db.commit()
@@ -18,7 +20,7 @@ def add_engin(db: Session, engin=EnginCreate):
 
 
 def add_chauffeur(db: Session, chauffeur=ChauffeurCreate):
-    #print(chauffeur.model_dump())
+    chauffeur.created_at = datetime.now()
     db_chauffeur = models.ChauffeurModel(**chauffeur.model_dump())
     db.add(db_chauffeur)
     db.commit()
