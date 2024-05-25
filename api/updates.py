@@ -22,6 +22,26 @@ def update_engin_chauffeur(db:Session, idEngin:int, chauffeur_update:EnginChauff
         return None
 
 
+def update_engin_chauffeur_with_immatricule_code_permanent(db:Session, immatricule:str, chauffeur_update:EnginChauffeurUpdate):
+    engin_data = reads.get_engin_immatricule(db=db, immatricule=immatricule)
+    if engin_data:
+        engin_unassign = update_engin_unassign_with_immatricule(db=db, immatricule=immatricule)
+        if engin_unassign:
+            codePermanent = chauffeur_update.model_dump()['codePermanent']
+            db_chauffeur = reads.get_chauffeur_by_code_permanent(db=db, codePermanent=codePermanent)
+            update_unassign_chauffeur_engin_with_code_permanent(db=db, codePermanent=codePermanent)
+            if db_chauffeur:
+                idChauffeur = db_chauffeur.idChauffeur
+                req = text("""
+                        UPDATE Engin SET idChauffeur=:idChauffeur
+                        WHERE immatricule=:immatricule 
+                    """)
+                result = db.execute(req, {"immatricule": immatricule, "idChauffeur": idChauffeur})
+                db.commit()
+                return reads.get_chauffeur_engin_with_code_permanent(db=db, codePermanent=codePermanent)
+    return None
+
+
 def update_engin_unassign_with_immatricule(db:Session, immatricule:str):
     db_engin = reads.get_engin_immatricule(db=db, immatricule=immatricule)
     if db_engin:

@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
 import models 
-from schemas.Engin import EnginCreate, Engin, EnginChauffeur, EnginChauffeurUpdate
+from schemas.Engin import EnginCreate, Engin, EnginChauffeur, EnginChauffeurUpdate, EnginCHauffeurCodePermanent
 from schemas.Chauffeur import Chauffeur, ChauffeurCreate
 from schemas.Mission import Mission, MissionCreate, MissionUpdateFin, MissionResponseUpdate
 from schemas.Partenaire import Partenaire, PartenaireCreate
@@ -94,6 +94,14 @@ def update_chauffeur_engin(idEngin:int, chauffeur_update:EnginChauffeurUpdate, d
             return db_update
         else:
             raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Engin not found")
+
+
+@engin_router.put("/update/engin/chauffeur/{immatricule}", response_model = EnginChauffeur)
+def update_engin_immatricule_code_permanent(immatricule:str, chauffeur:EnginCHauffeurCodePermanent, db:Session=Depends(get_db)):
+    updated = updates.update_engin_chauffeur_with_immatricule_code_permanent(db=db, immatricule=immatricule, chauffeur_update=chauffeur)
+    if updated:
+        return updated
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Error assignation")
 
 
 @engin_router.put("/update/engin/unassign/{immatricule}", response_model=Engin)
