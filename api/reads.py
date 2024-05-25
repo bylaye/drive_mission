@@ -19,7 +19,7 @@ def get_engin_by_id(db:Session, idEngin:int):
     return db.query(models.EnginModel).filter(models.EnginModel.idEngin==idEngin).first()
 
 
-def get_engin_immatricule(db:Session, immatricule:int):
+def get_engin_immatricule(db:Session, immatricule:str):
     db_immatricule = db.query(models.EnginModel).filter(models.EnginModel.immatricule==immatricule).first()
     return db_immatricule
 
