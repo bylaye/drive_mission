@@ -59,16 +59,6 @@ function Engins({ action }) {
       {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label>ID Chauffeur</label>
-          <input
-            type="number"
-            name="idChauffeur"
-            value={formData.idChauffeur}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
           <label>Immatricule</label>
           <input
             type="text"
