@@ -32,6 +32,19 @@ def update_engin_unassign_with_immatricule(db:Session, immatricule:str):
     return None
 
 
+def update_unassign_chauffeur_engin_with_code_permanent(db:Session, codePermanent:str):
+    db_chauffeur = reads.get_chauffeur_engin_with_code_permanent(db=db, codePermanent=codePermanent)
+    if db_chauffeur:
+        req = text("""
+                UPDATE Engin SET idChauffeur = NULL
+                WHERE idChauffeur = (SELECT idChauffeur FROM Chauffeur WHERE codePermanent=:codePermanent)
+                """)
+        result = db.execute(req, {"codePermanent": codePermanent})
+        db.commit()
+        return reads.get_engin_by_id(db=db, idEngin=db_chauffeur['idEngin'])
+    return None
+
+
 def update_fin_mission(db:Session, idMission:int, mission_update:MissionUpdateFin):
     mission_data = db.query(models.MissionModel).filter(models.MissionModel.idMission==idMission).first()
     if mission_data:

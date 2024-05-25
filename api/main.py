@@ -104,6 +104,18 @@ def update_engin_unassign(immatricule:str, db: Session = Depends(get_db)):
     raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Engin {immatricule} not found") 
 
 
+@engin_router.put("/update/engin/unassign/chauffeur/{codePermanent}", response_model=Engin)
+def update_engin_unassign_chauffeur(codePermanent:str, db:Session = Depends(get_db)):
+    db_chauffeur = reads.get_chauffeur_by_code_permanent(db=db, codePermanent=codePermanent)
+    if db_chauffeur:
+        updated = updates.update_unassign_chauffeur_engin_with_code_permanent(db=db, codePermanent=codePermanent)
+        if updated:
+            return updated
+        raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Code Permanent: {codePermanent} Non Engin assign Chauffeur") 
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail=f"Code Permanent: {codePermanent} Not Found")
+
+
+
 # Chauffeur
 chauffeur_router = APIRouter(prefix="/chauffeurs", tags=["Chauffeurs"])
 
