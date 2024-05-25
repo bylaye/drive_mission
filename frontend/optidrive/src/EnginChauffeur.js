@@ -4,8 +4,8 @@ import axios from 'axios';
 function EnginChauffeur(){
     const [immatriculeQuery, setImmatriculeQuery] = useState('');
   const [chauffeurQuery, setChauffeurQuery] = useState('');
-  const [chauffeurId, setChauffeurId] = useState(null);
-  const [enginImmatricule, setEnginImmatricule] = useState(null);
+  const [ , setChauffeurId] = useState(null);
+  const [ , setEnginImmatricule] = useState(null);
   const [idEnginImmatricule, setIdEnginImmatricule] = useState(null);
   const [message, setMessage] = useState('');
 
@@ -34,7 +34,10 @@ function EnginChauffeur(){
         setMessage(`Engin ${response.data.immatricule} n'est plus assigne`);
 
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.detail) {
+        if (error.message === 'Network Error') {
+          setMessage('Erreur réseau : Impossible de se connecter');
+        }
+        else if (error.response && error.response.data && error.response.data.detail) {
             setMessage(`Erreur : ${error.response.data.detail}`);
         } else {
             setMessage('UNKNOWN Erreur lors de la désassignation du chauffeur');
@@ -65,7 +68,11 @@ function EnginChauffeur(){
         const response = await axios.put(`http://localhost:8000/engins/update/engin/unassign/chauffeur/${chauffeurQuery}`);
         setMessage(`Chauffeur Code Permanent ${chauffeurQuery} unassign engin immatricule ${response.data.immatricule}`);
     } catch (error) {
-        if (error.response && error.response.data && error.response.data.detail) {
+        if (error.message === 'Network Error') {
+          setMessage('Erreur réseau : Impossible de se connecter');
+          throw error;
+        }
+        else if (error.response && error.response.data && error.response.data.detail) {
             setMessage(`Erreur : ${error.response.data.detail}`);
         } else {
             setMessage('UNKNOWN ERROR');
