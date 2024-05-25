@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Engins from './Engins';
 import Chauffeurs from './Chauffeurs';
 import Missions from './Missions';
+import EnginChauffeur from './EnginChauffeur';
 
 export function App() {
   const [activeTab, setActiveTab] = useState('engins');
@@ -32,7 +33,7 @@ export function App() {
         {openMenu === 'engins' && (
           <div className="submenu">
             <button onClick={() => setActiveTab('addEngin')}>Ajouter Engin</button>
-            <button onClick={() => setActiveTab('addEngin')}>Modifier Engin</button>
+            <button onClick={() => setActiveTab('assignEnginChauffeur')}>Assigner Chauffeur</button>
           </div>
         )}
 
@@ -48,8 +49,8 @@ export function App() {
       </div>
 
       <div className="content">
-        {activeTab === 'editEngin' && <Engins action="editEngin" />}
         {activeTab === 'addEngin' && <Engins action="addEngin" />}
+        {activeTab === 'assignEnginChauffeur' && <EnginChauffeur />}
         {activeTab === 'addMission' && <Missions action="addMission" />}
         {activeTab === 'affecterMission' && <Missions action="affecterMission" />}
         {activeTab === 'addChauffeur' && <Chauffeurs action="addChauffeur" />}

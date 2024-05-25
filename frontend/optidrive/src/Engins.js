@@ -1,18 +1,21 @@
 // src/Engins.js
 
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function Engins({ action }) {
   const [formData, setFormData] = useState({
-    idChauffeur: '',
-    capacite: '',
-    isRemorque: false,
+    idChauffeur: null,
+    capacite: 0,
+    is_remorque: false,
     immatricule: '',
     marque: '',
     typeEngin: '',
     annee: '',
     typeFuel: '',
   });
+
+  const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,18 +24,39 @@ function Engins({ action }) {
 
   const handleRadioChange = (e) => {
     const { value } = e.target;
-    setFormData((prev) => ({ ...prev, isRemorque: value === 'oui' }));
+    setFormData((prev) => ({ ...prev, is_remorque: value === 'oui' }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can handle the form submission, for example, by sending the data to your backend
     console.log('Form data submitted:', formData);
+    try{
+      const response = await axios.post('http://localhost:8000/engins/add',{
+        ...formData,
+        idChauffeur: formData.idChauffeur ? parseInt(formData.idChauffeur) : null,
+      }, {
+        headers:{'Content-Type': 'application/json',},
+      });
+
+      if (response.status === 200){
+        setMessage(`Engin ${response.data.immatricule} Ajoute avec succes`)
+        console.log("Engin Ajoute avec succes", response.request.response);
+        // console.log('Response Request:', response.data);
+      }
+    } catch (error) {
+      if (error.response){
+        setMessage(`Engin, ${error.response.data.detail}`)
+        console.log('W WWWW WWDDD',error.response.request.response, error.response.status, "QQQQ aaa")
+      }
+      // console.error('Error Data submitted', error)
+    }
   };
 
   return (
     <div>
-      <h2>{action === 'add' ? 'Ajouter un Engin' : 'Modifier un Engin'}</h2>
+      <h2>{action === 'addEngin' ? 'Ajouter un Engin' : 'Modifier un Engin'} </h2>
+      {message && <p>{message}</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>ID Chauffeur</label>
@@ -63,15 +87,26 @@ function Engins({ action }) {
             onChange={handleChange}
           />
         </div>
+        
+        <div>
+          <label>Année</label>
+          <input
+            type="number"
+            name="annee"
+            value={formData.annee}
+            onChange={handleChange}
+          />
+        </div>
+        
         <div>
           <label>Remorque</label>
           <div>
             <label>
               <input
                 type="radio"
-                name="isRemorque"
+                name="is_remorque"
                 value="oui"
-                checked={formData.isRemorque === true}
+                checked={formData.is_remorque === true}
                 onChange={handleRadioChange}
               />
               Oui
@@ -79,9 +114,9 @@ function Engins({ action }) {
             <label>
               <input
                 type="radio"
-                name="isRemorque"
+                name="is_remorque"
                 value="non"
-                checked={formData.isRemorque === false}
+                checked={formData.is_remorque === false}
                 onChange={handleRadioChange}
               />
               Non
@@ -93,7 +128,7 @@ function Engins({ action }) {
           <label>Type d'Engin</label>
           <select
             name="typeEngin"
-            value={formData.marque}
+            value={formData.typeEngin}
             onChange={handleChange}
           >
             <option value="">Sélectionnez une marque</option>
@@ -102,9 +137,9 @@ function Engins({ action }) {
             <option value="Poclain">Poclain</option>
           </select>
         </div>
+
         <div>
-          <label>Marque</label>
-          
+          <label>Marque</label>  
           <select
             name="marque"
             value={formData.marque}
@@ -117,23 +152,9 @@ function Engins({ action }) {
             <option value="NISSAN">NISSAN</option>
           </select>
         </div>
-        <div>
-          <label>Année</label>
-          <input
-            type="number"
-            name="annee"
-            value={formData.annee}
-            onChange={handleChange}
-          />
-        </div>
+        
         <div>
           <label>Type de Fuel</label>
-          <input
-            type="text"
-            name="typeFuel"
-            value={formData.typeFuel}
-            onChange={handleChange}
-          />
           <select
             name="typeFuel"
             value={formData.typeFuel}

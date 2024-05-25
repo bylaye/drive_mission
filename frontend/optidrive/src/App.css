@@ -72,6 +72,30 @@ body, html, #root {
   overflow: auto;
 }
 
+.content form.enginUpdate input{
+  background-color: #d3d3e4;
+  width: 50vh;
+}
+
+.content button{
+  background-color: #8a8abb;
+  padding: 8px;
+  margin: 4px;
+  width: 180px;
+}
+
+button.unassign {
+  background-color: #c96464;
+  padding: 8px;
+  margin: 4px;
+}
+
+.content button[type='submit']{
+  background-color: green;
+  padding: 8px;
+  margin: 8px;
+}
+
 form {
   margin-top: 20px;
 }
@@ -87,6 +111,6 @@ label {
 
 input {
   padding: 8px;
-  width: 90%;
+  width: 70%;
   box-sizing: border-box;
 }
