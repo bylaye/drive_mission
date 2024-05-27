@@ -25,7 +25,6 @@ export function App() {
         {openMenu === "chauffeurs" && (
           <div className="submenu">
             <button onClick={() => setActiveTab('addChauffeur')}>Ajouter un Chauffeur</button>
-            <button onClick={() => setActiveTab('enginChauffeur')}> Modifier un Chauffeur</button>
           </div>
         )}
 

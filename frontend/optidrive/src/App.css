@@ -104,6 +104,16 @@ form div {
   margin-bottom: 10px;
 }
 
+
+
+.valid {
+  color: green;
+}
+
+.invalid {
+  color: red;
+}
+
 label {
   display: block;
   margin-bottom: 5px;
@@ -113,4 +123,16 @@ input {
   padding: 8px;
   width: 70%;
   box-sizing: border-box;
+}
+
+div .message{
+  height: 40px;
+  /* padding: 8px; */
+  /* margin: 8px; */
+  width: 70%;
+  background-color: #f2f2f2;
+}
+
+div .message p{
+  padding: 8px;
 }
