@@ -197,6 +197,15 @@ def update_mission_end_date(idMission:int, mission_update:MissionUpdateFin, db:S
     raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Not updated mission not found") 
 
 
+@mission_router.put("/update/mission/codemission/{codeMission}", response_model=Mission)
+def update_mission_end_date_by_code(codeMission:str, mission_update:MissionUpdateFin, db:Session = Depends(get_db)):
+    updated = updates.update_fin_mission_by_code(db=db, codeMission=codeMission, mission_update=mission_update)
+    print(f'result {updated} ')
+    if updated:
+        return updated
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Not updated mission not found") 
+
+
 # Partenaire
 partenaire_router = APIRouter(prefix="/partenaires", tags=["Partenaires"])
 

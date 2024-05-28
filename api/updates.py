@@ -75,3 +75,18 @@ def update_fin_mission(db:Session, idMission:int, mission_update:MissionUpdateFi
         return reads.get_mission_with_partenaire(db=db, idMission=idMission)
     else:
         return None
+
+
+def update_fin_mission_by_code(db:Session, codeMission:str, mission_update:MissionUpdateFin):
+    mission_data = db.query(models.MissionModel).filter(models.MissionModel.codeMission==codeMission).first()
+    print(mission_data.finMission)
+    if mission_data:
+        idMission = mission_data.idMission
+        mission_data.finMission = mission_update.model_dump()["finMission"]
+        db.commit()
+        db.refresh(mission_data)
+
+        #return reads.get_mission_with_partenaire(db=db, idMission=idMission)
+        return reads.get_mission_by_code(db=db, codeMission=codeMission)
+    else:
+        return None
