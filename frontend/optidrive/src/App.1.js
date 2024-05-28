@@ -3,6 +3,8 @@ import Engins from './Engins';
 import Chauffeurs from './Chauffeurs';
 import Missions from './Missions';
 import EnginChauffeur from './EnginChauffeur';
+import MissionEngins from './MissionEngins';
+import Partenaires from './Partenaires';
 
 export function App() {
   const [activeTab, setActiveTab] = useState('engins');
@@ -44,14 +46,15 @@ export function App() {
           </div>
         )}
 
-        {/* <button onClick={() => setActiveTab('chauffeurs')}>Chauffeurs</button> */}
+        {<button onClick={() => setActiveTab('addPartenaire')}>Ajouter Partenaire</button>}
       </div>
 
       <div className="content">
         {activeTab === 'addEngin' && <Engins action="addEngin" />}
         {activeTab === 'assignEnginChauffeur' && <EnginChauffeur />}
         {activeTab === 'addMission' && <Missions action="addMission" />}
-        {activeTab === 'affecterMission' && <Missions action="affecterMission" />}
+        {activeTab === 'affecterMission' && <MissionEngins  />}
+        {activeTab === 'addPartenaire' && <Partenaires  />}
         {activeTab === 'addChauffeur' && <Chauffeurs action="addChauffeur" />}
         {activeTab === 'enginChauffeur' && <Chauffeurs action="enginChauffeur" />}
       </div>
