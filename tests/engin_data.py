@@ -4,7 +4,8 @@ import json
 
 engin = ['data/engins.csv', '/engins/add']
 
-base_url = 'http://127.0.0.1:8000'
+#base_url = 'http://127.0.0.1:8000'
+base_url = 'http://3.15.153.1:8000'
 
 headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
 
