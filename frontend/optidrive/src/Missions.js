@@ -5,7 +5,8 @@ import React, { useState } from 'react';
 const Missions = () => {
   const [formData, setFormData] = useState({
     typeMission: '',
-    statusMission: '',
+    // statusMission: '',
+    codeMission: '',
     description: '',
     debutMission: '',
     finMission: '',
@@ -60,6 +61,17 @@ const Missions = () => {
       {formData && (
         <form onSubmit={handleSubmit}>
           <div>
+            <label>Code Mission:</label>
+            <input 
+              required
+              type="text"
+              name='codeMission'
+              value={formData.codeMission}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
             <label>Type de Mission:</label>
             <input 
               required
@@ -102,7 +114,7 @@ const Missions = () => {
             />
           </div>
           
-          <div>
+          {/* <div>
             <label>Status Mission:</label>
             <input
               required
@@ -111,7 +123,7 @@ const Missions = () => {
               name='statusMission'
               onChange={handleChange}
             />
-          </div>
+          </div> */}
 
           <div>
             <label>Quantite:</label>
