@@ -16,8 +16,8 @@ class MissionFin(BaseModel):
 
 class MissionBase(MissionStatus):
     idPartenaire: Optional[int] = None
-    codeMission: str
-    typeMission: str
+    codeMission: Optional[str] 
+    typeMission: Optional[str]
     description: Optional[str] = None
     quantite: Optional[float] = 0
 
