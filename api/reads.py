@@ -157,10 +157,10 @@ def get_all_recharge_engin_immatricule(db:Session, immatricule:int):
 
 
 def get_all_mission_engin_run(db:Session):
-    req = text("""SELECT m.idMission, a.idEngin, immatricule, codeMission, idPartenaire 
+    req = text("""SELECT m.idMission, e.idEngin, immatricule, codeMission, idPartenaire 
             FROM (SELECT codeMission, idMission, idPartenaire FROM Mission WHERE statusMission='RUN') as m 
             LEFT JOIN Affecter as a on m.idmission = a.idmission 
-            LEFT JOIN Engin as e on e.idengin=a.idengin
+            RIGHT JOIN Engin as e on e.idengin=a.idengin
         """)
     result = db.execute(req)
     rows = result.fetchall()
