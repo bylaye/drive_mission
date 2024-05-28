@@ -220,8 +220,9 @@ partenaire_router = APIRouter(prefix="/partenaires", tags=["Partenaires"])
 
 @partenaire_router.post("/add", response_model=Partenaire)
 def create_partenaire(partenaire: PartenaireCreate, db: Session = Depends(get_db)):
+    nomPartenaire = partenaire.model_dump()['nomPartenaire']
     db_partenaire = reads.get_partenaire_by_name(db=db, nomPartenaire=nomPartenaire)
-    if db_partenaire:
+    if not db_partenaire:
         return create.add_partenaire(db=db, partenaire=partenaire)
     raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Partenaire exists") 
 
