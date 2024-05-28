@@ -154,3 +154,20 @@ def get_all_recharge_engin_immatricule(db:Session, immatricule:int):
                 data.append(dict(zip(cols, row)))
             return data
     return None
+
+
+def get_all_mission_engin_run(db:Session):
+    req = text("""SELECT m.idMission, a.idEngin, immatricule, codeMission, idPartenaire 
+            FROM (SELECT codeMission, idMission, idPartenaire FROM Mission WHERE statusMission='RUN') as m 
+            LEFT JOIN Affecter as a on m.idmission = a.idmission 
+            LEFT JOIN Engin as e on e.idengin=a.idengin
+        """)
+    result = db.execute(req)
+    rows = result.fetchall()
+    data = []
+    cols = result.keys()
+    if rows:
+        for row in rows:
+            data.append(dict(zip(cols, row)))
+        return data
+    return None

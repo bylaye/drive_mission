@@ -11,6 +11,7 @@ from schemas.Partenaire import Partenaire, PartenaireCreate
 from schemas.RechargeFuel import RechargeFuel, RechargeFuelCreate, RechargeFuelEnginResponse
 from schemas.Affecter import Affecter, AffecterCreate
 from schemas.Deplacement import Deplacement, DeplacementCreate
+from schemas.MissionEnginRun import MissionEnginResponse
 import create
 import reads
 import updates
@@ -187,6 +188,14 @@ def get_mission_by_code(codeMission:str, db: Session = Depends(get_db)):
     if db_mission:
         return db_mission
     raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Mission not found") 
+
+
+@mission_router.get("/get/mission/engin/run/all", response_model=List[MissionEnginResponse])
+def get_all_mission_engin_run(db:Session = Depends(get_db)):
+    result = reads.get_all_mission_engin_run(db=db)
+    if result:
+        return result
+    raise HTTPException(status_code=400, detail="Aucune Mission en cours")
 
 
 @mission_router.put("/update/mission/{idMission}", response_model=MissionResponseUpdate)
