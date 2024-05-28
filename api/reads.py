@@ -72,6 +72,10 @@ def get_mission_by_id(db:Session, idMission:int):
     return db.query(models.MissionModel).filter(models.MissionModel.idMission==idMission).first()
 
 
+def get_mission_by_code(db:Session, codeMission:str):
+    return db.query(models.MissionModel).filter(models.MissionModel.codeMission==codeMission).first()
+
+
 def get_partenaire_all(db:Session):
     return db.query(models.PartenaireModel).all()
 

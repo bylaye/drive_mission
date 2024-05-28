@@ -56,6 +56,7 @@ class ChauffeurModel(Base):
 class MissionModel(Base):
     __tablename__ = 'Mission'
     idMission = Column(Integer, primary_key=True)
+    codeMission = Column(String(10), unique=True, index=True, nullable=False)
     typeMission = Column(String(30), index=True)
     description = Column(String(255))
     debutMission = Column(DateTime, nullable=False)

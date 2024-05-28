@@ -181,6 +181,14 @@ def get_mission_by_id(idMission:int, db: Session = Depends(get_db)):
     raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Mission not found") 
 
 
+@mission_router.get("/get/codemission/{codeMission}", response_model=Mission)
+def get_mission_by_code(codeMission:str, db: Session = Depends(get_db)):
+    db_mission = reads.get_mission_by_code(codeMission=codeMission, db=db)
+    if db_mission:
+        return db_mission
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Mission not found") 
+
+
 @mission_router.put("/update/mission/{idMission}", response_model=MissionResponseUpdate)
 def update_mission_end_date(idMission:int, mission_update:MissionUpdateFin, db:Session = Depends(get_db)):
     updated = updates.update_fin_mission(db=db, idMission=idMission, mission_update=mission_update)
