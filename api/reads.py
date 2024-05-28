@@ -84,6 +84,10 @@ def get_partenaire_by_id(db:Session, idPartenaire:int):
     return db.query(models.PartenaireModel).filter(models.PartenaireModel.idPartenaire==idPartenaire).first()
 
 
+def get_partenaire_by_name(db:Session, nomPartenaire:str):
+    return db.query(models.PartenaireModel).filter(models.PartenaireModel.nomPartenaire==nomPartenaire).first()
+
+
 def get_mission_with_partenaire(db:Session, idMission:int):
     req = text("""SELECT idMission, typeMission, description, debutMission, finMission, 
                quantite, statusMission, idPartenaire, nomPartenaire
