@@ -10,6 +10,7 @@ const MissionEngins = () => {
     });
 
     const [message, setMessage] = useState('');
+    const [missions, setMissions] = useState({})
 
 
     const handleChange = (e) =>{
@@ -20,10 +21,12 @@ const MissionEngins = () => {
     const checkMission = async () => {
         try{
             console.log('code mission', formData.codeMission)
-            const response = await axios.get(`http://localhost:8000/missions/get/codemission/${formData.codeMission}`);
+            await axios.get(`http://localhost:8000/missions/get/codemission/${formData.codeMission}`);
             setMessage('Mission trouve');
             const r = await getMissionEnginRun();
-            console.log(r.data)
+            const formattedMissions = formatMissions(r.data);
+            setMissions(formattedMissions);
+            
         }catch (error){
             console.log(error.response.data);
             setMessage('Mission non trouve');
@@ -38,7 +41,24 @@ const MissionEngins = () => {
         }catch (error){
             console.log(error);
         }
-    }
+    };
+
+    const formatMissions = (data) => {
+        const formatted = {};
+        data.forEach(mission => {
+            const { immatricule, idEngin, codeMission } = mission;
+            if (!formatted[immatricule]) {
+                formatted[immatricule] = {
+                    idEngin,
+                    codeMissions: []
+                };
+            }
+            if (codeMission) {
+                formatted[immatricule].codeMissions.push(codeMission);
+            }
+        });
+        return formatted;
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -68,7 +88,7 @@ const MissionEngins = () => {
                     {message} 
                 </p> }
             </div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label>Code Mission</label>
                     <input
@@ -88,8 +108,20 @@ const MissionEngins = () => {
                     >
                     </input>
                 </div>
+                <div>
+                    {Object.keys(missions).length > 0 && (
+                        <ul>
+                            {Object.entries(missions).map(([immatricule, details]) => (
+                                <li key={immatricule}>
+                                    idEngin: {details.idEngin}: <strong>{immatricule}</strong>, codeMissions: {details.codeMissions.join(', ')} {details.codeMissions.length}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
                 <button type='submit'>Soumettre</button>
             </form>
+            
         </div>
     );
 
