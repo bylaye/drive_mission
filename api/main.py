@@ -166,7 +166,16 @@ mission_router = APIRouter(prefix="/missions", tags=["Missions"])
 
 @mission_router.post("/add/", response_model=Mission)
 def create_mission(mission:MissionCreate, db: Session = Depends(get_db)):
-    return create.add_mission(db=db, mission=mission)
+    mission_dict = mission.model_dump()
+    idPartenaire = mission_dict['idPartenaire']
+    codeMission = mission_dict['codeMission']
+    db_partenaire = reads.get_partenaire_by_id(idPartenaire=idPartenaire, db=db)
+    db_mission = reads.get_mission_by_code(codeMission=codeMission, db=db)
+    if db_partenaire or idPartenaire == None:
+        if not db_mission:
+            return create.add_mission(db=db, mission=mission)
+        raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Code Mission exists") 
+    raise HTTPException(status_code=ERROR_NOT_FOUND, detail="Partenaire not found") 
 
 
 @mission_router.get("/get/all", response_model=List[Mission])
