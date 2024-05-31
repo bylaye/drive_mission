@@ -137,9 +137,9 @@ def create_chauffeur(chauffeur:ChauffeurCreate, db: Session = Depends(get_db)):
     return create.add_chauffeur(db=db, chauffeur=chauffeur)
 
 
-@chauffeur_router.get("/get/all/", response_model=List[Engin])
-def get_engin_all(db:Session = Depends(get_db)):
-    chauffeurs = reads.get_engin_all(db=db)
+@chauffeur_router.get("/get/all/", response_model=List[Chauffeur])
+def get_chauffeur_all(db:Session = Depends(get_db)):
+    chauffeurs = reads.get_chauffeur_all(db=db)
     return chauffeurs
 
 
