@@ -22,10 +22,10 @@ function Engins({ action }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleRadioChange = (e) => {
-    const { value } = e.target;
-    setFormData((prev) => ({ ...prev, is_remorque: value === 'oui' }));
-  };
+  // const handleRadioChange = (e) => {
+  //   const { value } = e.target;
+  //   setFormData((prev) => ({ ...prev, is_remorque: value === 'oui' }));
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,7 +88,7 @@ function Engins({ action }) {
           />
         </div>
         
-        <div>
+        {/* <div>
           <label>Remorque</label>
           <div>
             <label>
@@ -112,7 +112,7 @@ function Engins({ action }) {
               Non
             </label>
           </div>
-        </div>
+        </div> */}
         
         <div>
           <label>Type d'Engin</label>

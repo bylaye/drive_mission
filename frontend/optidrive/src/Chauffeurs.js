@@ -109,6 +109,7 @@ const Chauffeurs = ({action}) => {
               onChange={handleChange}
               value={formData.codePermanent}
             />
+            <br/>
             {
               errors.codePermanent && 
               <span 

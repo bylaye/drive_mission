@@ -110,7 +110,7 @@ function EnginChauffeur(){
         <div>
             <h2>Assigner Engin à un Chauffeur</h2>
             {message && <p>{message}</p>}
-            <form class="enginUpdate" onSubmit={handleSubmit}>
+            <form class="updates" onSubmit={handleSubmit}>
             <div>
                 <label>Immatricule Engin</label>
                 <input

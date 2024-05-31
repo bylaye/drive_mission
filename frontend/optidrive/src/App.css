@@ -3,6 +3,7 @@ body, html, #root {
   margin: 0;
   height: 100%;
   font-family: Arial, sans-serif;
+  font-size: 18px;
 }
 
 .App {
@@ -23,6 +24,7 @@ body, html, #root {
   bottom: 0;
   left: 0;
   overflow: auto;
+  
 }
 .sidebar button {
   background-color: #34495e;
@@ -33,6 +35,7 @@ body, html, #root {
   cursor: pointer;
   text-align: left;
   width: 100%;
+  font-size: 18px;
 }
 
 .sidebar button.active {
@@ -72,7 +75,7 @@ body, html, #root {
   overflow: auto;
 }
 
-.content form.enginUpdate input{
+.content form.updates input{
   background-color: #d3d3e4;
   width: 50vh;
 }
@@ -82,22 +85,26 @@ body, html, #root {
   padding: 8px;
   margin: 4px;
   width: 180px;
+  font-size: 18px;
 }
 
 button.unassign {
   background-color: #c96464;
   padding: 8px;
   margin: 4px;
+  font-size: 18px;
 }
 
 .content button[type='submit']{
-  background-color: green;
+  background-color: #98b298;
   padding: 8px;
   margin: 8px;
+  font-size: 22px;
 }
 
 form {
   margin-top: 20px;
+  font-size: 18px;
 }
 
 form div {
@@ -123,6 +130,7 @@ input {
   padding: 8px;
   width: 70%;
   box-sizing: border-box;
+  font-size: 18px;
 }
 
 div .message{
@@ -130,8 +138,30 @@ div .message{
   /* padding: 8px; */
   /* margin: 8px; */
   width: 70%;
-  background-color: #f2f2f2;
+  background-color: #fffffc;
 }
+
+.acceuil1 {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center;
+  gap: 16px; /* Ajouter un espace entre les divs */
+}
+
+.acceuil1 div{
+  background-color: #9a9aa2;
+  width: 250px;
+  /* height: 20vh; */
+  /* padding-left: 4px; */
+  margin: 8px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 45px;
+}
+
+/* .acceuil1 div p{
+  font-size: 45px;
+} */
 
 div .message p{
   padding: 8px;

@@ -45,7 +45,7 @@ const Partenaires = () => {
 
   return (
     <div>
-      <h1>Missions</h1>
+      <h1>Partenaires</h1>
       <div className='message'>
         {
           message && 

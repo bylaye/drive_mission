@@ -5,9 +5,10 @@ import Missions from './Missions';
 import EnginChauffeur from './EnginChauffeur';
 import MissionEngins from './MissionEngins';
 import Partenaires from './Partenaires';
+import Acceuil from './Acceuil';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState('engins');
+  const [activeTab, setActiveTab] = useState('acceuil');
   // const [openMenu, setOpenMenu] = useState({
   //   chauffeurs: false,
   //   missions: false,
@@ -23,10 +24,15 @@ export function App() {
     <div className="App">
       <div className='sidebar'>
 
+        {<button onClick={() => setActiveTab('acceuil')}>Acceuil</button>}
+        
+        {<button onClick={() => setActiveTab('addPartenaire')}>Partenaires</button>}
+        
         <button onClick={() => handleMenuClick('chauffeurs')}>Chauffeurs </button>
         {openMenu === "chauffeurs" && (
           <div className="submenu">
             <button onClick={() => setActiveTab('addChauffeur')}>Ajouter un Chauffeur</button>
+            <button onClick={() => setActiveTab('listChauffeur')}>Liste des Chauffeurs</button>
           </div>
         )}
 
@@ -46,7 +52,7 @@ export function App() {
           </div>
         )}
 
-        {<button onClick={() => setActiveTab('addPartenaire')}>Ajouter Partenaire</button>}
+        
       </div>
 
       <div className="content">
@@ -55,6 +61,7 @@ export function App() {
         {activeTab === 'addMission' && <Missions action="addMission" />}
         {activeTab === 'affecterMission' && <MissionEngins  />}
         {activeTab === 'addPartenaire' && <Partenaires  />}
+        {activeTab === 'acceuil' && <Acceuil />}
         {activeTab === 'addChauffeur' && <Chauffeurs action="addChauffeur" />}
         {activeTab === 'enginChauffeur' && <Chauffeurs action="enginChauffeur" />}
       </div>
